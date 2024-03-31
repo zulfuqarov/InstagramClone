@@ -25,6 +25,7 @@ cloudinary.config({
 const Port = process.env.PORT;
 
 const server = express();
+server.use(cookieParser());
 server.use(bodyParser.json());
 server.use(cors(corsOptions));
 server.use(fileUpload({ useTempFiles: true }));
