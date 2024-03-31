@@ -107,6 +107,16 @@ router.post("/Sign", async (req, res) => {
   }
 });
 
+router.post("/Logout", async (req, res) => {
+  try {
+    res.clearCookie("jwtToken");
+    res.status(2000).json({ message: "Profile has been Logout" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 router.get("/Profile", async (req, res) => {
   const token = req.cookies.jwtToken;
   try {
