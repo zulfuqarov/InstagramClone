@@ -97,6 +97,30 @@ router.put("/unFollow/:id", async (req, res) => {
   }
 });
 
+router.get("/ProfileUser", async (req, res) => {
+  const userId = req.query.userId;
+  const username = req.query.username;
+  try {
+    const ProfileUser = userId
+      ? await user.findById(userId)
+      : await user.findOne({
+          username: username,
+        });
+    return res.status(200).json(ProfileUser);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
+router.get("/AllProfile", async (req, res) => {
+  try {
+    const allUSerProfile = await user.find();
+    res.status(200).json(allUSerProfile);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 export default router;

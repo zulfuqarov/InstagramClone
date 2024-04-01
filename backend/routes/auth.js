@@ -67,14 +67,9 @@ router.post("/Sign", async (req, res) => {
         if (IsMatch) {
           const payload = {
             sub: CheckEmail._id,
-            name: CheckEmail.username,
-            email: CheckEmail.email,
-            fullName: CheckEmail.fullName,
-            bio: CheckEmail.bio,
-            profilePicture: CheckEmail.profilePicture,
           };
 
-          const token = await jwt.sign(payload, process.env.TOKEN_SECRET_CODE, {
+          const token = jwt.sign(payload, process.env.TOKEN_SECRET_CODE, {
             expiresIn: "3d",
           });
 
@@ -124,7 +119,9 @@ router.get("/Profile", async (req, res) => {
       const decodedToke = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
       req.user = await user.findById(decodedToke.sub);
       if (req.user) {
-        return res.status(200).json("Profile Siged");
+        return res
+          .status(200)
+          .json({ message: "Profile Siged", user: req.user });
       } else {
         return res.status(400).json({ message: "user not found" });
       }
