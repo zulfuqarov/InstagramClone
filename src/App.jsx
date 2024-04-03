@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import io from 'socket.io-client';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+
+  const [yazisma, setyazisma] = useState("")
+  const [gelencvb, setgelencvb] = useState([])
+
+  const changeInput = (e) => {
+    setyazisma(e.target.value)
+  }
+
+  const gonder = () => {
+    const socket = io('http://localhost:8585'); // Sunucu adresini ve portunu doğru şekilde ayarlayın
+    socket.emit("alinanMesaj", {
+      mesaj: yazisma
+    })
+    socket.on('gonderilenMesaj', (data) => {
+      console.log(setgelencvb([...gelencvb, data]));
+    })
+    setyazisma("")
+  }
+
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      {
+        gelencvb &&
+        gelencvb.map((oneMap) => (
+          <p>{oneMap}</p>
+        ))
+      }
+      <h1>Socket.io React App</h1>
+      <input value={yazisma} onChange={changeInput} type="text" />
+      <button onClick={gonder}>gonder</button>
+    </div>
+  );
+};
 
-export default App
+export default App;
