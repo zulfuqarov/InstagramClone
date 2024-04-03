@@ -52,10 +52,11 @@ router.put("/Follow/:id", async (req, res) => {
       const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
       if (decodedToken.sub !== req.params.id) {
         const UserShe = await user.findById(req.params.id);
-        const currentUser = await user.findById(req.decodedToken.sub);
+        const currentUser = await user.findById(decodedToken.sub);
         if (!UserShe.followers.includes(decodedToken.sub)) {
           await UserShe.updateOne({ $push: { followers: decodedToken.sub } });
           await currentUser.updateOne({ $push: { followings: req.params.id } });
+          return res.status(200).json("you have been succesful follow");
         } else {
           return res.status(400).send("You are already following this user!");
         }
@@ -76,7 +77,7 @@ router.put("/unFollow/:id", async (req, res) => {
   if (token) {
     try {
       const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
-      if (decodedToken.sub !== req.params.id) {
+      if (decodedToken.sub === req.params.id) {
         const UserShe = await user.findById(req.params.id);
         const currentUser = await user.findById(req.decodedToken.sub);
         if (UserShe.followers.includes(decodedToken.sub)) {

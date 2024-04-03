@@ -1,5 +1,6 @@
 import express from "express";
 import post from "../model/post.js";
+import user from "../model/user.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
@@ -68,10 +69,32 @@ router.get("/GetUserPost", async (req, res) => {
   const token = req.cookies.jwtToken;
   try {
     const decotedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
-    const GetUserPost = await post.findById(decotedToken.sub);
+    const GetUserPost = await post.find({
+      userId: decotedToken.sub,
+    });
     res.status(200).json(GetUserPost);
   } catch (error) {
     console.log(eroor);
+    res.status(500).json("Internal server error");
+  }
+});
+
+router.get("/FollowingPost", async (req, res) => {
+  const token = req.cookies.jwtToken;
+  try {
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
+    const userPost = await user.findById(decodedToken.sub);
+    const followingPosts = [];
+    for (const followingId of userPost.followings) {
+      const followingUser = await post.find({
+        userId: followingId,
+      });
+      followingPosts.push([...followingUser]);
+    }
+
+    res.status(200).json(followingPosts);
+  } catch (error) {
+    console.log(error);
     res.status(500).json("Internal server error");
   }
 });
