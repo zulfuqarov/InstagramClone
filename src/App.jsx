@@ -1,41 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+// import React, { useEffect, useState } from 'react';
+// import io from 'socket.io-client';
 
-const App = () => {
+// const App = () => {
 
-  const [yazisma, setyazisma] = useState("")
-  const [gelencvb, setgelencvb] = useState([])
+//   const [yazisma, setyazisma] = useState("")
+//   const [gelencvb, setgelencvb] = useState([null])
+//   const [socket, setsocket] = useState(null)
+//   const changeInput = (e) => {
+//     setyazisma(e.target.value)
+//   }
 
-  const changeInput = (e) => {
-    setyazisma(e.target.value)
-  }
+//   const gonder = () => {
+//     if (!socket) return;
 
-  const gonder = () => {
-    const socket = io('http://localhost:8585'); // Sunucu adresini ve portunu doğru şekilde ayarlayın
-    socket.emit("alinanMesaj", {
-      mesaj: yazisma
-    })
-    socket.on('gonderilenMesaj', (data) => {
-      console.log(setgelencvb([...gelencvb, data]));
-    })
-    setyazisma("")
-  }
+//     socket.emit("alinanMesaj", {
+//       mesaj: yazisma
+//     })
 
+//     setyazisma("")
+//   }
 
+//   useEffect(() => {
+//     const newSocket = io('http://localhost:8585');
+//     setsocket(newSocket);
 
-  return (
-    <div>
-      {
-        gelencvb &&
-        gelencvb.map((oneMap) => (
-          <p>{oneMap}</p>
-        ))
-      }
-      <h1>Socket.io React App</h1>
-      <input value={yazisma} onChange={changeInput} type="text" />
-      <button onClick={gonder}>gonder</button>
-    </div>
-  );
-};
+//     newSocket.on('gonderilenMesaj', (data) => {
+//       if (gelencvb !== null) {
+//         setgelencvb((prev) => (
+//           [...prev, data]
+//         ))
+//       } else {
+//         setgelencvb([data])
+//       }
+//       console.log(gelencvb)
+//     })
+//     // ComponentWillUnmount'da soket bağlantısını kapat
+//     return () => {
+//       newSocket.disconnect();
+//     };
+//   }, [])
 
-export default App;
+//   return (
+//     <div>
+//       {
+//         gelencvb &&
+//         gelencvb.map((oneMap, index) => (
+//           <p key={index}>{oneMap}</p>
+//         ))
+//       }
+//       <h1>Socket.io React App</h1>
+//       <input value={yazisma} onChange={changeInput} type="text" />
+//       <button onClick={gonder}>gonder</button>
+//     </div>
+//   ); 
+// };
+
+// export default App;
