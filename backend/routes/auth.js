@@ -80,7 +80,7 @@ router.post("/Sign", async (req, res) => {
 
           res
             .status(200)
-            .json({ message: "Your login has been successfully completed" });
+            .json({ message: "Your login has been successfully completed",token });
 
           // return res.status(200).json(CheckEmail);
         } else {

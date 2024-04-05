@@ -7,8 +7,9 @@ import cookieParser from "cookie-parser";
 import fileUpload from "express-fileupload";
 import { v2 as cloudinary } from "cloudinary";
 import { createServer } from "http";
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 import AllRoute from "./AllRoutes.js";
+import {initSocket} from "./routes/userMessage.js"
 
 const corsOptions = {
   origin: "*",
@@ -43,17 +44,8 @@ const connectMongoDb = async () => {
 server.use("/api", AllRoute);
 
 const httpServer = createServer(server);
-const io = new Server(httpServer, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-  },
-});
-io.on("connection", (SocketData) => {
-  SocketData.on("alinanMesaj", (data) => {
-    io.sockets.emit("gonderilenMesaj", data.mesaj);
-  });
-});
+initSocket(httpServer)
+
 httpServer.listen(Port, async () => {
   try {
     await connectMongoDb();
