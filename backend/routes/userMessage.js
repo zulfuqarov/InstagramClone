@@ -3,14 +3,13 @@ import dotenv from "dotenv";
 import express from "express";
 import jwt from "jsonwebtoken";
 import message from "../model/message.js";
-import { Server } from "socket.io";
+import {Server} from "socket.io"
 dotenv.config();
 const router = express.Router();
 
 router.post("/messages/:receiverId", async (req, res) => {
   const { receiverId } = req.params;
-  // const token = req.cookies.jwtToken;
-  const {token} = req.body;
+  const token = req.cookies.jwtToken;
   try {
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
 
@@ -30,8 +29,7 @@ router.post("/messages/:receiverId", async (req, res) => {
 
 router.get("/messages/:receiverId", async (req, res) => {
   const { receiverId } = req.params;
-  // const token = req.cookies.jwtToken;
-  const token = req.headers.authorization; // JWT tokenini headers içinden al
+  const token = req.cookies.jwtToken;
   try {
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
     const Message = await message
@@ -58,11 +56,10 @@ export const initSocket = (server) => {
   });
 
   io.on("connection", (SocketData) => {
-    SocketData.on("alinanMesaj", (data) => {
-      io.sockets.emit("gonderilenMesaj", data.mesaj);
-    });
-    console.log("qosuldu");
-    
+    // SocketData.on("alinanMesaj", (data) => {
+    //   io.sockets.emit("gonderilenMesaj", data.mesaj);
+    // });
+    console.log("qosuldu")
   });
 
   return io;
