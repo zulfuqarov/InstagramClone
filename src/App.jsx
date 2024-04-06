@@ -1,58 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import io from 'socket.io-client';
+import React from 'react'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from "./pages/Register"
+import Catalog from "./pages/Catalog"
+import Message from "./pages/Catalog"
 
 const App = () => {
-
-  const [yazisma, setyazisma] = useState("")
-  const [gelencvb, setgelencvb] = useState([null])
-  const [socket, setsocket] = useState(null)
-  const changeInput = (e) => {
-    setyazisma(e.target.value)
-  }
-
-  const gonder = () => {
-    if (!socket) return;
-
-    socket.emit("alinanMesaj", {
-      mesaj: yazisma
-    })
-
-    setyazisma("")
-  }
-
-  useEffect(() => {
-    const newSocket = io('http://localhost:8585');
-    setsocket(newSocket);
-
-    newSocket.on('gonderilenMesaj', (data) => {
-      if (gelencvb !== null) {
-        setgelencvb((prev) => (
-          [...prev, data]
-        ))
-      } else {
-        setgelencvb([data])
-      }
-      console.log(gelencvb)
-    })
-    // ComponentWillUnmount'da soket bağlantısını kapat
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [])
-
   return (
-    <div>
-      {
-        gelencvb &&
-        gelencvb.map((oneMap, index) => (
-          <p key={index}>{oneMap}</p>
-        ))
-      }
-      <h1>Socket.io React App</h1>
-      <input value={yazisma} onChange={changeInput} type="text" />
-      <button onClick={gonder}>gonder</button>
-    </div>
-  ); 
-};
+    <BrowserRouter>
+      <div className='flex '>
+        <Catalog />
+        <div className='border-l-[1px] border-gray-200 h-[100%] py-[100px] w-[70%] '>
+          <Routes>
+            <Route path="/Register" element={<Register />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/Message" element={<Message />} />
+          </Routes>
+        </div>
 
-export default App;
+      </div>
+    </BrowserRouter>
+  )
+}
+
+export default App

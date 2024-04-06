@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import jwt from "jsonwebtoken";
 import message from "../model/message.js";
-import {Server} from "socket.io"
+import { Server } from "socket.io";
 dotenv.config();
 const router = express.Router();
 
@@ -47,6 +47,33 @@ router.get("/messages/:receiverId", async (req, res) => {
   }
 });
 
+router.delete("/messages/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    await message.findByIdAndDelete(id);
+    res.status(200).send("Mesaj silindi");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.put("/messagesUpdate/:id", async (req, res) => {
+  const { id } = req.params;
+  const { newMessage } = req.body;
+  try {
+    const UpdateMessage = await message.findByIdAndUpdate(
+      id,
+      { $set: { message: newMessage } },
+      { new: true }
+    );
+    res.status(200).json(UpdateMessage);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal server error");
+  }
+});
+
 export const initSocket = (server) => {
   const io = new Server(server, {
     cors: {
@@ -59,7 +86,7 @@ export const initSocket = (server) => {
     // SocketData.on("alinanMesaj", (data) => {
     //   io.sockets.emit("gonderilenMesaj", data.mesaj);
     // });
-    console.log("qosuldu")
+    console.log("qosuldu");
   });
 
   return io;
