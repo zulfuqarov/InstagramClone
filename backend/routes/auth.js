@@ -3,16 +3,26 @@ import express from "express";
 import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import cloudinary from "cloudinary";
 const router = express.Router();
 
 dotenv.config();
 
 router.post("/Register", async (req, res) => {
+  const defaultImg =
+    "https://assets.bananastreet.ru/unsafe/2498x2498/https://bananastreet.ru/system/user/avatar/38/382/382231/7e7ab91539.png";
   const { username, email, password, bio, fullName } = req.body;
-  const profilePicture =
+  let profilePicture =
     req.files && req.files.profilePicture
-      ? req.files.profilePicture
-      : "default.jpg";
+      ? req.files.profilePicture.tempFilePath
+      : defaultImg;
+
+  if (profilePicture !== defaultImg) {
+    profilePicture = await cloudinary.uploader.upload(profilePicture, {
+      use_filename: true,
+      folder: "Home",
+    });
+  }
 
   if (username && email && password) {
     try {
@@ -39,7 +49,8 @@ router.post("/Register", async (req, res) => {
           password: HashedPassword,
           bio,
           fullName,
-          profilePicture,
+          profilePicture:
+            profilePicture !== defaultImg ? profilePicture.url : profilePicture,
         });
         await newUser.save();
         return res.status(200).json({ message: "user has been created" });
@@ -78,9 +89,10 @@ router.post("/Sign", async (req, res) => {
             maxAge: 1000 * 60 * 60 * 24 * 7,
           });
 
-          res
-            .status(200)
-            .json({ message: "Your login has been successfully completed",token });
+          res.status(200).json({
+            message: "Your login has been successfully completed",
+            token,
+          });
 
           // return res.status(200).json(CheckEmail);
         } else {

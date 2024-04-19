@@ -9,10 +9,10 @@ import { v2 as cloudinary } from "cloudinary";
 import { createServer } from "http";
 // import { Server } from "socket.io";
 import AllRoute from "./AllRoutes.js";
-import {initSocket} from "./routes/userMessage.js"
+import { initSocket } from "./routes/userMessage.js";
 
 const corsOptions = {
-  origin: "*",
+  origin: "http://localhost:5173",
   credentials: true,
 };
 
@@ -44,7 +44,7 @@ const connectMongoDb = async () => {
 server.use("/api", AllRoute);
 
 const httpServer = createServer(server);
-initSocket(httpServer)
+initSocket(httpServer);
 
 httpServer.listen(Port, async () => {
   try {
