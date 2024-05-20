@@ -10,6 +10,8 @@ import Register from './page/Register';
 import HomeIndex from './components/HomeIndex';
 import AddPost from './page/AddPost';
 import Context from './Context/Context';
+import Message from './page/Message';
+import Search from './page/Search';
 
 
 axios.defaults.withCredentials = true;
@@ -22,6 +24,8 @@ const App = () => {
           <Route path="/" element={<Home />} >
             <Route index={true} element={<HomeIndex />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="/Message" element={<Message />} />
+            <Route path='Search' element={<Search />} />
             <Route path='Add-Post' element={<AddPost />} />
           </Route >
           <Route path="/login" element={<Login />} />
