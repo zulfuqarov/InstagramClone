@@ -15,6 +15,7 @@ const Register = () => {
     bio: ''
   })
   const [inputFile, setinputFile] = useState(null)
+  const [selectedImage, setselectedImage] = useState(null)
 
   const handleChange = (e) => {
     setinputs(
@@ -26,7 +27,11 @@ const Register = () => {
   }
 
   const handleChangeFile = (e) => {
+    if (!e.target.files[0]) {
+      return;
+  }
     setinputFile(e.target.files[0])
+    setselectedImage(URL.createObjectURL(e.target.files[0]))
   }
 
   const handleSubmit = async () => {
@@ -72,10 +77,35 @@ const Register = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Create and account
               </h1>
-              <div>
-                <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
-                <input onChange={handleChange} type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required="" />
+
+              <div className='flex justify-between ite-center'>
+                <div className=" flex items-center justify-center ">
+                  <label htmlFor="fileInput" className="relative rounded-full w-[100px] h-[100px] overflow-hidden  border-4 border-dashed border-gray-300 cursor-pointer">
+                    {selectedImage ? (
+                      <img src={selectedImage} alt="Selected" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="flex flex-col items-center justify-center w-full h-full text-gray-400">
+                        <svg className="w-[30px] h-[30px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span className='text-[11px] text-center'>choes profile <br /> img</span>
+                      </div>
+                    )}
+                    <input
+                      id="fileInput"
+                      type="file"
+                      className="absolute inset-0 opacity-0 cursor-pointer"
+                      accept="image/*"
+                      onChange={handleChangeFile}
+                    />
+                  </label>
+                </div>
+                <div>
+                  <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
+                  <input onChange={handleChange} type="text" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Name" required="" />
+                </div>
               </div>
+
               <div>
                 <label htmlFor="fullName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full-Name</label>
                 <input onChange={handleChange} type="text" name="fullName" id="fullName" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Full-Name" required="" />
@@ -94,13 +124,7 @@ const Register = () => {
                 <textarea name='bio' onChange={handleChange} id="bio" rows="4" className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your bio..."></textarea>
 
               </div>
-              <div>
 
-                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload Profile Photo</label>
-                <input onChange={handleChangeFile} className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="file_input_help" id="file_input" type="file" />
-                <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
-
-              </div>
 
               <button onClick={handleSubmit} type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">

@@ -13,6 +13,7 @@ import Context from './Context/Context';
 
 import Message from './page/Message';
 import Search from './page/Search';
+import NotFoundPage from './page/NotFoundPage';
 
 
 
@@ -32,7 +33,7 @@ const App = () => {
           </Route >
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Context>
     </BrowserRouter>

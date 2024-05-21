@@ -3,6 +3,7 @@ import post from "../model/post.js";
 import user from "../model/user.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import cloudinary from "cloudinary";
 
 dotenv.config();
 
@@ -11,14 +12,28 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   const token = req.cookies.jwtToken;
   const { des, likes } = req.body;
-  const img = req.files && req.files.img ? req.files.img : "postimg.jpg";
+  const defaultImg =
+    "https://assets.bananastreet.ru/unsafe/2498x2498/https://bananastreet.ru/system/user/avatar/38/382/382231/7e7ab91539.png";
+
+  let postPicture =
+    req.files && req.files.postPicture
+      ? req.files.postPicture.tempFilePath
+      : defaultImg;
+
+  if (postPicture !== defaultImg) {
+    postPicture = await cloudinary.uploader.upload(postPicture, {
+      use_filename: true,
+      folder: "Home",
+    });
+  }
+
   try {
     const decetedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
     const newPost = new post({
       userId: decetedToken.sub,
       des,
       likes,
-      img,
+      img: postPicture !== defaultImg ? postPicture.url : postPicture,
     });
     await newPost.save();
     res.status(200).json("Post has been addend");
