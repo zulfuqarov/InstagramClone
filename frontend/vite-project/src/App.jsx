@@ -10,8 +10,10 @@ import Register from './page/Register';
 import HomeIndex from './components/HomeIndex';
 import AddPost from './page/AddPost';
 import Context from './Context/Context';
+
 import Message from './page/Message';
 import Search from './page/Search';
+
 
 
 axios.defaults.withCredentials = true;
@@ -30,7 +32,7 @@ const App = () => {
           </Route >
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Context>
     </BrowserRouter>
