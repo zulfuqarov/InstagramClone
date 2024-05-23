@@ -103,10 +103,12 @@ router.get("/ProfileUser", async (req, res) => {
   const username = req.query.username;
   try {
     const ProfileUser = userId
-      ? await user.findById(userId)
-      : await user.findOne({
-          username: username,
-        });
+      ? await user.findById(userId).select("-email -password")
+      : await user
+          .findOne({
+            username: username,
+          })
+          .select("-email -password");
     return res.status(200).json(ProfileUser);
   } catch (error) {
     console.log(error);
@@ -116,7 +118,7 @@ router.get("/ProfileUser", async (req, res) => {
 
 router.get("/AllProfile", async (req, res) => {
   try {
-    const allUSerProfile = await user.find();
+    const allUSerProfile = await user.find().select("-email -password");
     res.status(200).json(allUSerProfile);
   } catch (error) {
     console.log(error);

@@ -1,17 +1,46 @@
-import React, { useState } from 'react'
-
+import React, { useState, useContext } from 'react';
+import { ContextInsta } from '../Context/Context';
+import axios from 'axios'
 const AddPost = () => {
 
+  const context = useContext(ContextInsta)
+
+
   const [selectedImage, setSelectedImage] = useState(null);
+  const [postImg, setpostImg] = useState(null)
   const [description, setdescription] = useState('')
+
   const handleImageChange = (event) => {
     if (!event.target.files[0]) {
       return;
-  }
+    }
     const imageFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(imageFile);
     setSelectedImage(imageUrl);
+    setpostImg(imageFile)
   };
+
+
+  const AddPost = async () => {
+    if (postImg == null || description == '') {
+      alert('Pls Check Form')
+    } else {
+      try {
+        const formData = new FormData();
+        formData.append("postPicture", postImg);
+        formData.append("des", description);
+        formData.append("userId", context.user);
+        const res = await axios.post(`${context.REACT_APP_BACKEND_HOST}/post/`, formData)
+        console.log(res.data)
+        alert(`${res.data}`)
+        setpostImg(null)
+        setSelectedImage(null)
+        setdescription('')
+      } catch (error) {
+        console.log(error.response.data.message)
+      }
+    }
+  }
 
   return (
     <div className="bg-white shadow-md rounded-md p-4 max-w-md mx-auto pt-[80px]">
@@ -47,7 +76,7 @@ const AddPost = () => {
       </div>
 
       <button
-        type="submit"
+        onClick={AddPost}
         className="bg-blue-500 mt-[30px] text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300"
       >
         Add Post

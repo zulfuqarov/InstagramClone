@@ -133,7 +133,7 @@ router.get("/Profile", async (req, res) => {
       if (req.user) {
         return res
           .status(200)
-          .json({ message: "Profile Siged", user: req.user });
+          .json({ message: "Profile Siged", user: req.user._id });
       } else {
         return res.status(400).json({ message: "user not found" });
       }

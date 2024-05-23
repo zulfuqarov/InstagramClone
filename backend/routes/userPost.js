@@ -69,6 +69,18 @@ router.put("/EditPost/:id", async (req, res) => {
   }
 });
 
+// router.put("/Comment/:id", async (req, res) => {
+//   const token = req.cookies.jwtToken;
+//   const { id } = req.params;
+//   try {
+//     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
+//     const ComentPost = await post.findById(id);
+//     await ComentPost.updateOne({ $push: { comments: decodedToken.sub } });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
 router.get("/GetPost/:id", async (req, res) => {
   const { id } = req.params;
   try {
