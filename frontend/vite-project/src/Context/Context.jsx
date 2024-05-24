@@ -78,17 +78,6 @@ const Context = ({ children }) => {
     // get User Post end
 
 
-    // const [postComment,setpostComment] = useState([])
-    // const getPostComments = async(receiverId)=>{
-    //     try {
-    //         const res = await axios.get(`${REACT_APP_BACKEND_HOST}/postComment/?receiverId=${receiverId}`)
-    //         console.log(res.data)
-    //         setpostComment(res.data)
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
-
     // get userProfile start
     const [userProfile, setuserProfile] = useState(null)
     const getUserProfile = async () => {
@@ -101,6 +90,58 @@ const Context = ({ children }) => {
         }
     }
     // get userProfile end
+
+
+    // get all userProfile start
+    const [allUserProfile, setallUserProfile] = useState([])
+    const getAllUserProfile = async () => {
+        try {
+            const res = await axios.get(`${REACT_APP_BACKEND_HOST}/user/AllProfile`)
+            console.log(res.data)
+            setallUserProfile(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // get all userProfile end
+
+
+    // get follow start
+    const getFollow = async (id) => {
+        try {
+            const res = await axios.put(`${REACT_APP_BACKEND_HOST}/user/Follow/${id}`)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // get follow end
+
+
+    // get follow start
+    const getUnfollow = async (id) => {
+        try {
+            const res = await axios.put(`${REACT_APP_BACKEND_HOST}/user/unFollow/${id}`)
+            console.log(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // get follow end
+
+
+    // get followinf post start
+    const [followingPost, setfollowingPost] = useState([])
+    const getFollowingPost = async () => {
+        try {
+            const res = await axios.get(`${REACT_APP_BACKEND_HOST}/post/FollowingPost`)
+            console.log(res.data)
+            setfollowingPost(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // get followinf post end
 
     return (
         <ContextInsta.Provider value={{
@@ -116,8 +157,12 @@ const Context = ({ children }) => {
             userPost,
             userProfile,
             getUserProfile,
-            // getPostComments,
-            // postComment
+            getAllUserProfile,
+            allUserProfile,
+            getFollow,
+            getUnfollow,
+            followingPost,
+            getFollowingPost
         }}>
             {children}
         </ContextInsta.Provider>

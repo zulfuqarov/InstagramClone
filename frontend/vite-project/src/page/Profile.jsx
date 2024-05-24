@@ -4,7 +4,7 @@ import Post from '../components/Post'
 
 const Profile = () => {
     return (
-        <div className=''>
+        <div className='pb-[60px]'>
             <ProfileHeader />
             <Post />
         </div>

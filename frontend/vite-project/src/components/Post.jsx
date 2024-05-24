@@ -19,7 +19,7 @@ const Post = () => {
             context.userPost &&
             context.userPost.map((oneMap, index) => (
               <div key={index} className='relative group' /*onMouseEnter={() => context.getPostComments(oneMap._id)}*/>
-                <img className='rounded-md w-full h-full' src={`${oneMap.img}`} alt="" />
+                <img className='rounded-md w-full h-full object-cover' src={`${oneMap.img}`} alt="" />
                 <div className='opacity-0 z-10  dden group-hover:opacity-40 transition-all absolute top-0 left-0 w-full h-full bg-slate-900 	'>
 
                 </div>

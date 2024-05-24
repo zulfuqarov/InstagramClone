@@ -69,18 +69,6 @@ router.put("/EditPost/:id", async (req, res) => {
   }
 });
 
-// router.put("/Comment/:id", async (req, res) => {
-//   const token = req.cookies.jwtToken;
-//   const { id } = req.params;
-//   try {
-//     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
-//     const ComentPost = await post.findById(id);
-//     await ComentPost.updateOne({ $push: { comments: decodedToken.sub } });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
 router.get("/GetPost/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -116,7 +104,16 @@ router.get("/FollowingPost", async (req, res) => {
       const followingUser = await post.find({
         userId: followingId,
       });
-      followingPosts.push([...followingUser]);
+      const followingProfile = await user
+        .findById(followingId)
+        .select({ fullName: 1, bio: 1,profilePicture:1 });
+
+      const followingUserMap = followingUser.map((onemap) => {
+        const followingUserAddDetails = { ...onemap._doc, ...followingProfile._doc };
+        return followingUserAddDetails;
+      });
+
+      followingPosts.push(...followingUserMap);
     }
 
     res.status(200).json(followingPosts);

@@ -7,6 +7,7 @@ const UserProfile = () => {
 
     useEffect(() => {
         context.getUserProfile()
+        context.getAllUserProfile()
     }, [])
 
 
@@ -37,86 +38,34 @@ const UserProfile = () => {
                         <p className='text-[15px] text-gray-400'>Suggestions for you</p>
                         <p className='text-[15px] text-gray-600 cursor-pointer'>See All</p>
                     </div>
-                    <div className='pt-[10px] '>
-                        <div className='flex items-center justify-between'>
-                            <div className='flex items-center'>
-                                <div >
-                                    <img className="h-8 w-8  rounded-full" src="https://picsum.photos/id/1027/150/150" />
-                                </div>
-                                <div className='pl-[20px] text-gray-600 text-[15px]'>
-                                    <p>zulfuqarov</p>
-                                    <small>Azerbaijan Bakue</small>
-                                </div>
-                            </div>
-                            <div>
-                                <button className='text-[13px] text-blue-500'>Follow</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='pt-[10px] '>
-                        <div className='flex items-center justify-between'>
-                            <div className='flex items-center'>
-                                <div >
-                                    <img className="h-8 w-8  rounded-full" src="https://picsum.photos/id/1027/150/150" />
-                                </div>
-                                <div className='pl-[20px] text-gray-600 text-[15px]'>
-                                    <p>zulfuqarov</p>
-                                    <small>Azerbaijan Bakue</small>
+                    {
+                        context.allUserProfile &&
+
+                        context.allUserProfile.filter(oneFilter => oneFilter._id !== context.user).map((oneMap, index) => (
+                            <div key={index} className='pt-[10px] '>
+                                <div className='flex items-center justify-between'>
+                                    <div className='flex items-center'>
+                                        <div >
+                                            <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
+                                        </div>
+                                        <div className='pl-[20px] text-gray-600 text-[15px]'>
+                                            <p>{oneMap.fullName}</p>
+                                            <small>{oneMap.bio}</small>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        {
+                                            context.userProfile.followings.includes(oneMap._id) ?
+                                                <button onClick={() => context.getUnfollow(oneMap._id)} className='text-[13px] text-blue-500'>Unfollow</button>
+                                                :
+                                                <button onClick={() => context.getFollow(oneMap._id)} className='text-[13px] text-blue-500'>Follow</button>
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <button className='text-[13px] text-blue-500'>Follow</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='pt-[10px] '>
-                        <div className='flex items-center justify-between'>
-                            <div className='flex items-center'>
-                                <div >
-                                    <img className="h-8 w-8  rounded-full" src="https://picsum.photos/id/1027/150/150" />
-                                </div>
-                                <div className='pl-[20px] text-gray-600 text-[15px]'>
-                                    <p>zulfuqarov</p>
-                                    <small>Azerbaijan Bakue</small>
-                                </div>
-                            </div>
-                            <div>
-                                <button className='text-[13px] text-blue-500'>Follow</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='pt-[10px] '>
-                        <div className='flex items-center justify-between'>
-                            <div className='flex items-center'>
-                                <div >
-                                    <img className="h-8 w-8  rounded-full" src="https://picsum.photos/id/1027/150/150" />
-                                </div>
-                                <div className='pl-[20px] text-gray-600 text-[15px]'>
-                                    <p>zulfuqarov</p>
-                                    <small>Azerbaijan Bakue</small>
-                                </div>
-                            </div>
-                            <div>
-                                <button className='text-[13px] text-blue-500'>Follow</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='pt-[10px] '>
-                        <div className='flex items-center justify-between'>
-                            <div className='flex items-center'>
-                                <div >
-                                    <img className="h-8 w-8  rounded-full" src="https://picsum.photos/id/1027/150/150" />
-                                </div>
-                                <div className='pl-[20px] text-gray-600 text-[15px]'>
-                                    <p>zulfuqarov</p>
-                                    <small>Azerbaijan Bakue</small>
-                                </div>
-                            </div>
-                            <div>
-                                <button className='text-[13px] text-blue-500'>Follow</button>
-                            </div>
-                        </div>
-                    </div>
+                        ))
+
+                    }
                 </div>
             </div>
         )
