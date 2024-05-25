@@ -106,10 +106,13 @@ router.get("/FollowingPost", async (req, res) => {
       });
       const followingProfile = await user
         .findById(followingId)
-        .select({ fullName: 1, bio: 1,profilePicture:1 });
+        .select({ fullName: 1, bio: 1, profilePicture: 1, _id: 0 });
 
       const followingUserMap = followingUser.map((onemap) => {
-        const followingUserAddDetails = { ...onemap._doc, ...followingProfile._doc };
+        const followingUserAddDetails = {
+          ...onemap._doc,
+          ...followingProfile._doc,
+        };
         return followingUserAddDetails;
       });
 
@@ -120,6 +123,24 @@ router.get("/FollowingPost", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
+  }
+});
+
+router.put("/postLike/:id", async (req, res) => {
+  const token = req.cookies.jwtToken;
+  const { id } = req.params;
+  try {
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
+    const postFind = await post.findById(id);
+    if (postFind.likes.includes(decodedToken.sub)) {
+      await postFind.updateOne({ $pull: { likes: decodedToken.sub } });
+      res.status(200).json("you have unliked this post");
+    } else {
+      await postFind.updateOne({ $push: { likes: decodedToken.sub } });
+      res.status(200).json("you have liked this post");
+    }
+  } catch (error) {
+    console.log(error);
   }
 });
 

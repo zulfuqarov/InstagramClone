@@ -19,7 +19,7 @@ const HomeIndex = () => {
                             <div className="bg-white border rounded-sm max-w-md">
                                 <div className="flex justify-between items-center">
                                     <div className='flex items-center px-4 py-3'>
-                                        <img className="h-8 w-8 rounded-full" src="https://picsum.photos/id/1027/150/150" />
+                                        <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
                                         <div className="ml-3 ">
                                             <span className="text-sm font-semibold antialiased block leading-tight">{oneMap.fullName}</span>
                                             <span className="text-gray-600 text-xs block">{oneMap.bio}</span>
@@ -32,7 +32,9 @@ const HomeIndex = () => {
                                 <img className='object-cover w-[446px] h-[446px]' src={`${oneMap.img}`} />
                                 <div className="flex items-center justify-between mx-4 mt-3 mb-2">
                                     <div className="flex gap-5">
-                                        <i className="fa-regular fa-heart text-[22px] cursor-pointer"></i>
+                                        <button onClick={(e) => context.postlike(oneMap._id, e, index)}>
+                                            <i index={index} className={`fa-regular fa-heart text-[22px] cursor-pointer ${oneMap.likes.includes(context.user) ? 'text-red-600' : ''} `} />
+                                        </button>
                                         <i className="fa-regular fa-comment text-[22px] cursor-pointer"></i>
                                         <i className="fa-solid fa-share text-[22px] cursor-pointer"></i>
                                     </div>
@@ -40,18 +42,21 @@ const HomeIndex = () => {
                                         <i className="fa-regular fa-bookmark text-[22px] cursor-pointer"></i>
                                     </div>
                                 </div>
-                                {/* <div className="font-semibold text-sm mx-4 mt-2 mb-4">{oneMap.likes.length}</div> */}
+                                <div className="font-semibold text-sm mx-4 mt-2 mb-4">
+
+                                    {oneMap.likes.length}
+                                </div>
                                 <div className='border-[1px] border-gray-200 px-[10px] py-[10px] flex flex-col rounded-lg m-[10px]'>
                                     <div className='flex  items-center'>
                                         <div>
-                                            <img className="h-8 w-8 rounded-full" src="https://picsum.photos/id/1027/150/150" />
+                                            <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
                                         </div>
                                         <div className='pl-[10px]'>
-                                            name
+                                            {oneMap.fullName}
                                         </div>
                                     </div>
                                     <div className='pl-[30px] mx-auto'>
-                                        comments
+                                        {oneMap.des}
                                     </div>
                                 </div>
                             </div>

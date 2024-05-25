@@ -6,7 +6,7 @@ const ProfileHeader = () => {
 
     useEffect(() => {
         context.getUserProfile()
-    }, [])
+    }, [context.user])
 
     return (
 

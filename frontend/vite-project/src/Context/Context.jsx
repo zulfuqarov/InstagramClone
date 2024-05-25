@@ -63,6 +63,19 @@ const Context = ({ children }) => {
     // Check Token end
 
 
+    // Signout start
+    const signOut = async () => {
+        try {
+            const res = await axios.post(`${REACT_APP_BACKEND_HOST}/auth/Logout`)
+            console.log(res)
+            navigate("/Login")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // Signout end
+
+
     // get User Post start
     const [userPost, setuserPost] = useState([])
     const getUserPost = async () => {
@@ -143,6 +156,31 @@ const Context = ({ children }) => {
     }
     // get followinf post end
 
+
+    // post likse start
+    const [buttonIndex, setbuttonIndex] = useState(null)
+    const postlike = async (id, event,index) => {
+        try {
+            const res = await axios.put(`${REACT_APP_BACKEND_HOST}/post/postLike/${id}`)
+            console.log(res.data)
+            setbuttonIndex(index)
+            const paragraph = event.target;
+            if (paragraph) {
+                if (paragraph.classList.contains('text-red-600')) {
+                    paragraph.classList.remove('text-red-600');
+                    paragraph.classList.add('text-gray-600');
+                } else {
+                    paragraph.classList.remove('text-gray-600');
+                    paragraph.classList.add('text-red-600');
+                }
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // post likse end
+
     return (
         <ContextInsta.Provider value={{
             env,
@@ -162,7 +200,10 @@ const Context = ({ children }) => {
             getFollow,
             getUnfollow,
             followingPost,
-            getFollowingPost
+            getFollowingPost,
+            signOut,
+            postlike,
+            buttonIndex
         }}>
             {children}
         </ContextInsta.Provider>

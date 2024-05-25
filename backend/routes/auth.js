@@ -116,8 +116,12 @@ router.post("/Sign", async (req, res) => {
 
 router.post("/Logout", async (req, res) => {
   try {
-    res.clearCookie("jwtToken");
-    res.status(2000).json({ message: "Profile has been Logout" });
+    res.clearCookie("jwtToken", {
+      httpOnly: true,
+      secure: true, // Sadece HTTPS üzerinden gönderim için
+      sameSite: "strict",
+    });
+    res.status(200).json({ message: "Profile has been logged out" });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal server error" });

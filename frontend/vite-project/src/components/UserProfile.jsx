@@ -8,7 +8,7 @@ const UserProfile = () => {
     useEffect(() => {
         context.getUserProfile()
         context.getAllUserProfile()
-    }, [])
+    }, [context.user])
 
 
     if (context.userProfile) {
@@ -27,7 +27,7 @@ const UserProfile = () => {
                             </div>
                         </div>
                         <div>
-                            <button className='text-[13px] text-blue-500'>Sigin Out</button>
+                            <button onClick={() => context.signOut()} className='text-[13px] text-blue-500'>Sigin Out</button>
                         </div>
                     </div>
                 }
