@@ -41,7 +41,7 @@ const UserProfile = () => {
                     {
                         context.allUserProfile &&
 
-                        context.allUserProfile.filter(oneFilter => oneFilter._id !== context.user).map((oneMap, index) => (
+                        context.allUserProfile.filter(oneFilter => oneFilter._id !== context.user).reverse().map((oneMap, index) => (
                             <div key={index} className='pt-[10px] '>
                                 <div className='flex items-center justify-between'>
                                     <div className='flex items-center'>

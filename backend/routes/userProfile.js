@@ -127,4 +127,21 @@ router.get("/AllProfile", async (req, res) => {
   }
 });
 
+router.post("/ProfileSearch", async (req, res) => {
+  const { Search } = req.body;
+
+  try {
+    const ProfileSearch = await user.find({
+      fullName: { $regex: new RegExp("\\b" + Search, "i") },
+    });
+    if (ProfileSearch.length > 0) {
+      return res.status(200).json(ProfileSearch);
+    } else {
+      return res.status(404).json({ message: "This User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default router;

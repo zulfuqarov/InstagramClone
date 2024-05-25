@@ -159,7 +159,7 @@ const Context = ({ children }) => {
 
     // post likse start
     const [buttonIndex, setbuttonIndex] = useState(null)
-    const postlike = async (id, event,index) => {
+    const postlike = async (id, event, index) => {
         try {
             const res = await axios.put(`${REACT_APP_BACKEND_HOST}/post/postLike/${id}`)
             console.log(res.data)
@@ -178,8 +178,21 @@ const Context = ({ children }) => {
             console.log(error)
         }
     }
-
     // post likse end
+
+
+    // profile Search start
+    const [searchProfile, setsearchProfile] = useState([])
+    const profileSearch = async (SearchInput) => {
+        try {
+            const res = await axios.post(`${REACT_APP_BACKEND_HOST}/user/ProfileSearch`, SearchInput)
+            console.log(res.data)
+            setsearchProfile(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // profile Search end
 
     return (
         <ContextInsta.Provider value={{
@@ -203,7 +216,9 @@ const Context = ({ children }) => {
             getFollowingPost,
             signOut,
             postlike,
-            buttonIndex
+            buttonIndex,
+            profileSearch,
+            searchProfile
         }}>
             {children}
         </ContextInsta.Provider>
