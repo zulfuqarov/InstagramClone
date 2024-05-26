@@ -86,26 +86,22 @@ export const initSocket = (server) => {
   const users = {};
 
   io.on("connection", (SocketData) => {
-    
     SocketData.on("login", (userId) => {
       users[userId] = SocketData.id;
       console.log(`${userId} kullanıcı giriş yaptı`);
     });
 
-    SocketData.on('privateMessage', (senderId, receiverId, message) => {
-      const receiverSocketId =  [receiverId]; 
+    SocketData.on("privateMessage", (senderId, receiverId, message) => {
+      const receiverSocketId = users[receiverId];
       if (receiverSocketId) {
-        io.to(receiverSocketId).emit('privateMessage', senderId, message);
+        io.to(receiverSocketId).emit("privateMessage", senderId, message);
         console.log(`${senderId} -> ${receiverId}: ${message}`);
-      }else{
-        console.log("kulanici aktiv diyilir")
+      } else {
+        console.log("kulanici aktiv diyilir");
       }
     });
 
-    // SocketData.on("SendMessage", (data) => {
-    //   console.log(data);
-    // });
-    console.log("qosuldu");
+    console.log("Connecting Socket Io");
   });
 
   return io;

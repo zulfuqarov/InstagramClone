@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { ContextInsta } from '../Context/Context'
 
-const LeftMessage = () => {
+const LeftMessage = ({ getUseReceiverId }) => {
     const context = useContext(ContextInsta)
     return (
         <div>
@@ -11,8 +11,8 @@ const LeftMessage = () => {
                         <div className="flex flex-col divide-y h-full overflow-y-auto -mx-4">
                             {
                                 context.followingProfile &&
-                                context.followingProfile.map((oneMap) => (
-                                    <button className='flex'>
+                                context.followingProfile.map((oneMap,index) => (
+                                    <button key={index} onClick={() => getUseReceiverId(oneMap._id)} className='flex'>
                                         <div className="flex flex-row items-center p-4 ">
                                             <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-500 text-pink-300 font-bold flex-shrink-0">
                                                 <img className='w-full h-full object-cover rounded-full' src={`${oneMap.profilePicture}`} alt="" />

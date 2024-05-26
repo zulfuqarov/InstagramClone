@@ -10,16 +10,26 @@ const Message = () => {
     const context = useContext(ContextInsta)
 
     const [socket, setSocket] = useState(null);
+    const [messageArry, setmessageArry] = useState([])
+
     useEffect(() => {
         context.getFollowingProfile()
+
         const socket = io.connect('http://localhost:8585');
-        socket.emit('login', context.user);
         setSocket(socket);
+
+        socket.emit('login', context.user);
+
+        socket.on('privateMessage', (senderId, message) => {
+            setmessageArry(prevMessages => [...prevMessages, message]);
+            console.log(`[${senderId}]: ${message}`);
+        });
+
+
         return () => {
             socket.disconnect();
         };
     }, []);
-
 
 
     const [MessageInput, setMessageInput] = useState({
@@ -33,24 +43,24 @@ const Message = () => {
         })
     }
 
+
+    const [UseReceiverId, setUseReceiverId] = useState('')
+    const getUseReceiverId = (id) => {
+        setUseReceiverId(id)
+    }
+
+
     const SendMessage = () => {
         if (socket) {
-            // socket.emit("SendMessage", MessageInput);
-            socket.emit('privateMessage', context.user, "664f2e5b637e61f54fb92a23", MessageInput.Message);
-            socket.on('privateMessage', (senderId, message) => {
-                console.log(`[${senderId}]: ${message}`);
-            });
+            socket.emit('privateMessage', context.user, UseReceiverId, MessageInput.Message);
         } else {
             console.error('Soket bağlantısı bulunamadı.');
         }
     }
-
-
-
     return (
         <div class="flex flex-row h-screen antialiased text-gray-800">
-            <LeftMessage />
-            <RightMessage SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
+            <LeftMessage getUseReceiverId={getUseReceiverId} />
+            <RightMessage message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
         </div>
     )
 }
