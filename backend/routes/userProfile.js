@@ -117,6 +117,26 @@ router.get("/ProfileUser", async (req, res) => {
   }
 });
 
+router.get("/FollowingUser", async (req, res) => {
+  const token = req.cookies.jwtToken;
+  try {
+    const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
+    const userProfile = await user
+      .findById(decodedToken.sub)
+      .select("-email -password");
+    const followingProfile = [];
+    for (const followingUser of userProfile.followings) {
+      const FollowUser = await user
+        .findById(followingUser)
+        .select("-email -password");
+      followingProfile.push(FollowUser);
+    }
+    res.status(200).json(followingProfile);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 router.get("/AllProfile", async (req, res) => {
   try {
     const allUSerProfile = await user.find().select("-email -password");

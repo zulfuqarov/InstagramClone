@@ -194,6 +194,20 @@ const Context = ({ children }) => {
     }
     // profile Search end
 
+
+    // get follwong profile start
+    const [followingProfile, setfollowingProfile] = useState([])
+    const getFollowingProfile = async () => {
+        try {
+            const res = await axios.get(`${REACT_APP_BACKEND_HOST}/user/FollowingUser`)
+            console.log(res.data)
+            setfollowingProfile(res.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    // get follwong profile end
+
     return (
         <ContextInsta.Provider value={{
             env,
@@ -218,7 +232,10 @@ const Context = ({ children }) => {
             postlike,
             buttonIndex,
             profileSearch,
-            searchProfile
+            searchProfile,
+            getFollowingProfile,
+            followingProfile
+
         }}>
             {children}
         </ContextInsta.Provider>

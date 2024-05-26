@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import message from "../model/message.js";
 import { Server } from "socket.io";
 dotenv.config();
+
 const router = express.Router();
 
 router.post("/messages/:receiverId", async (req, res) => {
@@ -82,9 +83,27 @@ export const initSocket = (server) => {
     },
   });
 
+  const users = {};
+
   io.on("connection", (SocketData) => {
-    // SocketData.on("alinanMesaj", (data) => {
-    //   io.sockets.emit("gonderilenMesaj", data.mesaj);
+    
+    SocketData.on("login", (userId) => {
+      users[userId] = SocketData.id;
+      console.log(`${userId} kullanıcı giriş yaptı`);
+    });
+
+    SocketData.on('privateMessage', (senderId, receiverId, message) => {
+      const receiverSocketId =  [receiverId]; 
+      if (receiverSocketId) {
+        io.to(receiverSocketId).emit('privateMessage', senderId, message);
+        console.log(`${senderId} -> ${receiverId}: ${message}`);
+      }else{
+        console.log("kulanici aktiv diyilir")
+      }
+    });
+
+    // SocketData.on("SendMessage", (data) => {
+    //   console.log(data);
     // });
     console.log("qosuldu");
   });

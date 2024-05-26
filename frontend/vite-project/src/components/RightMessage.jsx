@@ -1,6 +1,6 @@
 import React from 'react'
 
-const RightMessage = () => {
+const RightMessage = ({ handleChangeMessage, SendMessage }) => {
     return (
         <div className="flex flex-col h-full w-full bg-white px-4 py-6">
             <div className="h-full overflow-hidden py-4">
@@ -199,11 +199,12 @@ const RightMessage = () => {
                 <div className="flex flex-row items-center w-full border rounded-3xl h-12 px-2">
                     <div className="w-full">
                         <input type="text"
+                            onChange={handleChangeMessage}
                             className="border border-transparent w-full focus:outline-none text-sm h-10 flex items-center" placeholder="Type your message...." />
                     </div>
                 </div>
                 <div className="ml-6">
-                    <button className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 ">
+                    <button onClick={SendMessage} className="flex items-center justify-center h-10 w-10 rounded-full bg-gray-200 hover:bg-gray-300 text-indigo-800 ">
                         <svg className="w-5 h-5 transform rotate-90 -mr-px"
                             fill="none"
                             stroke="currentColor"
