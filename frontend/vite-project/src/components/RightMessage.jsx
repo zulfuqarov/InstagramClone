@@ -1,8 +1,23 @@
 import React from 'react'
 
-const RightMessage = ({ handleChangeMessage, SendMessage, message }) => {
+const RightMessage = ({ handleChangeMessage, SendMessage, message, userMessagingProfile }) => {
     return (
         <div className="flex flex-col h-full w-full bg-white px-4 py-6">
+            <div>
+                {
+                    userMessagingProfile &&
+                    <div className="flex flex-row  items-center p-4 ">
+                        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-pink-500 text-pink-300 font-bold flex-shrink-0">
+                            <img className='w-full h-full object-cover rounded-full' src={`${userMessagingProfile.profilePicture}`} alt="" />
+                        </div>
+                        <div className="flex flex-col flex-grow ml-3">
+                            <div className="text-sm font-medium">{userMessagingProfile.fullName}</div>
+                            <div className="text-xs truncate w-40">{userMessagingProfile.bio}</div>
+                        </div>
+                    </div>
+
+                }
+            </div>
             <div className="h-full overflow-hidden py-4">
                 <div className="h-full overflow-y-auto">
                     <div className="grid grid-cols-12 gap-y-2">

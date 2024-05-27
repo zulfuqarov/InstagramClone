@@ -88,6 +88,8 @@ export const initSocket = (server) => {
   io.on("connection", (SocketData) => {
     SocketData.on("login", (userId) => {
       users[userId] = SocketData.id;
+      const activeUser = users[userId];
+      io.to(activeUser).emit("online", true);
       console.log(`${userId} kullanıcı giriş yaptı`);
     });
 
@@ -101,6 +103,7 @@ export const initSocket = (server) => {
       }
     });
 
+   
     console.log("Connecting Socket Io");
   });
 

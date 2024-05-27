@@ -11,6 +11,7 @@ const Message = () => {
 
     const [socket, setSocket] = useState(null);
     const [messageArry, setmessageArry] = useState([])
+    const [userActive, setuserActive] = useState(false)
 
     useEffect(() => {
         context.getFollowingProfile()
@@ -19,6 +20,10 @@ const Message = () => {
         setSocket(socket);
 
         socket.emit('login', context.user);
+
+        socket.on('online', (data) => {
+            setuserActive(data)
+        })
 
         socket.on('privateMessage', (senderId, message) => {
             setmessageArry(prevMessages => [...prevMessages, message]);
@@ -45,8 +50,10 @@ const Message = () => {
 
 
     const [UseReceiverId, setUseReceiverId] = useState('')
-    const getUseReceiverId = (id) => {
+    const [userMessagingProfile, setuserMessagingProfile] = useState(null)
+    const getUseReceiverId = (id, user) => {
         setUseReceiverId(id)
+        setuserMessagingProfile(user)
     }
 
 
@@ -59,8 +66,8 @@ const Message = () => {
     }
     return (
         <div class="flex flex-row h-screen antialiased text-gray-800">
-            <LeftMessage getUseReceiverId={getUseReceiverId} />
-            <RightMessage message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
+            <LeftMessage userActive={userActive} getUseReceiverId={getUseReceiverId} />
+            <RightMessage userMessagingProfile={userMessagingProfile} message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
         </div>
     )
 }
