@@ -88,8 +88,7 @@ export const initSocket = (server) => {
   io.on("connection", (SocketData) => {
     SocketData.on("login", (userId) => {
       users[userId] = SocketData.id;
-      const activeUser = users[userId];
-      io.to(activeUser).emit("online", true);
+      io.emit("online", Object.keys(users));
       console.log(`${userId} kullanıcı giriş yaptı`);
     });
 
@@ -103,7 +102,18 @@ export const initSocket = (server) => {
       }
     });
 
-   
+    SocketData.on("disconnect", () => {
+      const userId = Object.keys(users).find(
+        (key) => users[key] === SocketData.id
+      );
+
+      if (userId) {
+        console.log(`${userId} kullanıcı bağlantısı kesildi`);
+        delete users[userId];
+        io.emit("online", Object.keys(users));
+      }
+    });
+
     console.log("Connecting Socket Io");
   });
 

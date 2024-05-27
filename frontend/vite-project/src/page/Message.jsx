@@ -11,7 +11,7 @@ const Message = () => {
 
     const [socket, setSocket] = useState(null);
     const [messageArry, setmessageArry] = useState([])
-    const [userActive, setuserActive] = useState(false)
+    const [userActive, setuserActive] = useState([])
 
     useEffect(() => {
         context.getFollowingProfile()
@@ -22,7 +22,7 @@ const Message = () => {
         socket.emit('login', context.user);
 
         socket.on('online', (data) => {
-            setuserActive(data)
+            setuserActive(data);
         })
 
         socket.on('privateMessage', (senderId, message) => {
@@ -34,7 +34,7 @@ const Message = () => {
         return () => {
             socket.disconnect();
         };
-    }, []);
+    }, [context.user]);
 
 
     const [MessageInput, setMessageInput] = useState({

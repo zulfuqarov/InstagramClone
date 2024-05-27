@@ -24,7 +24,10 @@ const LeftMessage = ({ getUseReceiverId, userActive }) => {
                                         </div>
                                         <div>
                                             {
-                                                userActive ? <p className='text-[14px] text-green-500'>online</p> : <p className='text-[14px] text-red-500'>ofline</p>
+
+
+                                                userActive &&
+                                                    userActive.includes(oneMap._id) ? <p className='text-[14px] text-green-500'>online</p> : <p className='text-[14px] text-red-500'>ofline</p>
                                             }
                                         </div>
                                     </button>
