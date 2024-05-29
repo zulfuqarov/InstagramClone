@@ -38,12 +38,10 @@ const Message = () => {
 
 
     const [MessageInput, setMessageInput] = useState({
-        userName: '',
         Message: ''
     })
     const handleChangeMessage = (e) => {
         setMessageInput({
-            ...MessageInput,
             Message: e.target.value
         })
     }
@@ -56,10 +54,14 @@ const Message = () => {
         setuserMessagingProfile(user)
     }
 
-
+    const [senderUserMessage, setsenderUserMessage] = useState([])
     const SendMessage = () => {
+        setsenderUserMessage((prev) => [...prev, MessageInput.Message])
         if (socket) {
             socket.emit('privateMessage', context.user, UseReceiverId, MessageInput.Message);
+            setMessageInput({
+                Message: ''
+            })
         } else {
             console.error('Soket bağlantısı bulunamadı.');
         }
@@ -67,7 +69,7 @@ const Message = () => {
     return (
         <div class="flex flex-row h-screen antialiased text-gray-800">
             <LeftMessage userActive={userActive} getUseReceiverId={getUseReceiverId} />
-            <RightMessage userMessagingProfile={userMessagingProfile} message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
+            <RightMessage senderUserMessage={senderUserMessage} MessageInput={MessageInput} userMessagingProfile={userMessagingProfile} message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
         </div>
     )
 }
