@@ -1,6 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { ContextInsta } from '../Context/Context'
 
 const RightMessage = ({ handleChangeMessage, SendMessage, message, userMessagingProfile, MessageInput, senderUserMessage }) => {
+
+    const context = useContext(ContextInsta)
+
+    const [messageArry, setMessageArry] = useState([])
+    useEffect(() => {
+            setMessageArry([...senderUserMessage, ...message])
+    }, [senderUserMessage, message])
+
     return (
         <div className="flex flex-col h-full w-full bg-white px-4 py-6">
             <div>
@@ -15,49 +24,48 @@ const RightMessage = ({ handleChangeMessage, SendMessage, message, userMessaging
                             <div className="text-xs truncate w-40">{userMessagingProfile.bio}</div>
                         </div>
                     </div>
-
                 }
             </div>
             <div className="h-full overflow-hidden py-4">
                 <div className="h-full overflow-y-auto">
                     <div className="grid grid-cols-12 gap-y-2">
                         {
-                            message && message.map((oneMap, index) => (
-                                <div key={index} className="col-start-1 col-end-8 p-3 rounded-lg">
-                                    <div className="flex flex-row items-center">
-                                        <div
-                                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                        >
-                                            
-                                        </div>
-                                        <div
-                                            className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                        >
-                                            <div>{oneMap}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        }
-                   
-                        {
-                            senderUserMessage &&
-                            senderUserMessage.map((oneMap, index) => (
-                                <div key={index} className="col-start-6 col-end-13 p-3 rounded-lg">
-                                    <div className="flex items-center justify-start flex-row-reverse">
-                                        <div
-                                            className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
-                                        >
-                                            A
-                                        </div>
-                                        <div
-                                            className="relative mr-3 text-sm bg-indigo-100 py-2 px-4 shadow rounded-xl"
-                                        >
-                                            <div>
-                                                {oneMap}
-                                            </div>
-                                        </div>
-                                    </div>
+                            messageArry && messageArry.sort((a, b) => new Date(a.date) - new Date(b.date)).map((oneMap, index) => (
+                                <div key={index} className={oneMap.senderId === context.user ? 'col-start-6 col-end-13 p-3 rounded-lg ' : 'col-start-1 col-end-8 p-3 rounded-lg'}>
+                                    {
+                                        oneMap.senderId === context.user ?
+                                            <div className="flex flex-row items-center">
+                                                <div
+                                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                                >
+
+                                                </div>
+                                                <div
+                                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>
+                                                        {oneMap.message}
+                                                    </div>
+                                                </div>
+                                            </div> : ''
+                                    }
+                                    {
+                                        oneMap.UseReceiverId === userMessagingProfile._id ?
+                                            <div className="flex flex-row items-center">
+                                                <div
+                                                    className="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-500 flex-shrink-0"
+                                                >
+
+                                                </div>
+                                                <div
+                                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
+                                                >
+                                                    <div>
+                                                        {oneMap.message}
+                                                    </div>
+                                                </div>
+                                            </div> : ''
+                                    }
                                 </div>
                             ))
                         }
