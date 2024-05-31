@@ -67,6 +67,7 @@ const Message = () => {
 
     useEffect(() => {
         setsenderUserMessage([])
+        setmessageArry([])
     }, [userMessagingProfile])
 
     return (
