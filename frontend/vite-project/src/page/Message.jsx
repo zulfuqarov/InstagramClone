@@ -3,7 +3,7 @@ import LeftMessage from '../components/LeftMessage'
 import RightMessage from '../components/RightMessage'
 import { io } from 'socket.io-client';
 import { ContextInsta } from '../Context/Context';
-
+import axios from "axios"
 
 
 const Message = () => {
@@ -15,6 +15,8 @@ const Message = () => {
 
     useEffect(() => {
         context.getFollowingProfile()
+
+        context.getUserProfile()
 
         const socket = io.connect('http://localhost:8585');
         setSocket(socket);
@@ -44,7 +46,6 @@ const Message = () => {
         })
     }
 
-
     const [UseReceiverId, setUseReceiverId] = useState('')
     const [userMessagingProfile, setuserMessagingProfile] = useState(null)
     const getUseReceiverId = (id, user) => {
@@ -52,22 +53,58 @@ const Message = () => {
         setuserMessagingProfile(user)
     }
 
-    const [senderUserMessage, setsenderUserMessage] = useState([])
-    const SendMessage = () => {
-        setsenderUserMessage((prev) => [...prev, { message: MessageInput.Message, date: new Date(), senderId: context.user }])
-        if (socket) {
-            socket.emit('privateMessage', context.user, UseReceiverId, MessageInput.Message);
-            setMessageInput({
-                Message: ''
+    const [messageLoading, setmessageLoading] = useState([])
+    const postMessageDb = async () => {
+        try {
+            const res = await axios.post(`${context.REACT_APP_BACKEND_HOST}/message/messages/${UseReceiverId}`, {
+                messageContent: MessageInput.Message
             })
-        } else {
-            console.error('Soket bağlantısı bulunamadı.');
+            if (res.status === 201) {
+                console.log(res.data)
+                setmessageLoading(prev => [...prev, res.data.message])
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const [senderUserMessage, setsenderUserMessage] = useState([])
+    const SendMessage = async () => {
+        try {
+            await postMessageDb()
+            setsenderUserMessage((prev) => [...prev, { message: MessageInput.Message, date: new Date(), senderId: context.user }])
+            if (socket) {
+                socket.emit('privateMessage', context.user, UseReceiverId, MessageInput.Message);
+                setMessageInput({
+                    Message: ''
+                })
+            } else {
+                console.error('Soket bağlantısı bulunamadı.');
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const [dbMessage, setdbMessage] = useState([])
+    const [loading, setloading] = useState(false)
+    const getMessageDb = async () => {
+        setloading(true)
+        try {
+            const res = await axios.get(`${context.REACT_APP_BACKEND_HOST}/message/messages/${UseReceiverId}`)
+            setdbMessage(res.data)
+            setloading(false)
+        } catch (error) {
+            setloading(false)
+            console.log(error)
         }
     }
 
     useEffect(() => {
         setsenderUserMessage([])
         setmessageArry([])
+        setmessageLoading([])
+        getMessageDb()
     }, [userMessagingProfile])
 
     return (
@@ -75,7 +112,7 @@ const Message = () => {
             <LeftMessage userActive={userActive} getUseReceiverId={getUseReceiverId} />
             {
                 userMessagingProfile === null ? <p className='flex flex-col w-full h-full justify-center items-center text-red-500 text-[15px]'>Could you please select the person you'd like to message?</p> :
-                    <RightMessage senderUserMessage={senderUserMessage} MessageInput={MessageInput} userMessagingProfile={userMessagingProfile} message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
+                    <RightMessage loading={loading} dbMessage={dbMessage} messageLoading={messageLoading} senderUserMessage={senderUserMessage} MessageInput={MessageInput} userMessagingProfile={userMessagingProfile} message={messageArry} SendMessage={SendMessage} handleChangeMessage={handleChangeMessage} />
             }
         </div>
     )
