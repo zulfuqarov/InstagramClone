@@ -44,16 +44,21 @@ const RightMessage = ({ handleChangeMessage, SendMessage, message, userMessaging
                             <div className="grid grid-cols-12 gap-y-2">
                                 {
                                     dbMessage &&
-                                    dbMessage.filter((oneFilter) => oneFilter.sender === context.user).map((oneMap, index) => (
-                                        <div key={index} className='col-start-6 col-end-13 p-3 rounded-lg'>
+                                    dbMessage.map((oneMap, index) => (
+                                        <div key={index} className={oneMap.sender === context.user ? 'col-start-6 col-end-13 p-3 rounded-lg ' : 'col-start-1 col-end-8 p-3 rounded-lg'}>
                                             <div className="flex flex-row items-center relative">
                                                 <div
                                                     className="flex items-center justify-center h-10 w-10 rounded-full  flex-shrink-0"
                                                 >
                                                     {
-                                                        context.userProfile &&
-                                                        <img className="h-8 w-8 object-cover  rounded-full" src={`${context.userProfile.profilePicture}`} />
+                                                        oneMap.sender === context.user ?
 
+                                                            context.userProfile &&
+                                                            <img className="h-8 w-8 object-cover  rounded-full" src={`${context.userProfile.profilePicture}`} />
+
+                                                            :
+                                                            userMessagingProfile &&
+                                                            <img className="h-8 w-8 object-cover  rounded-full" src={`${userMessagingProfile.profilePicture}`} />
                                                     }
                                                 </div>
                                                 <div
@@ -67,27 +72,8 @@ const RightMessage = ({ handleChangeMessage, SendMessage, message, userMessaging
                                         </div>
                                     ))
                                 }
-                                {
-                                    dbMessage &&
-                                    dbMessage.filter((oneFilter) => oneFilter.sender === userMessagingProfile._id).map((oneMap, index) => (
-                                        <div key={index} className='col-start-1 col-end-8 p-3 rounded-lg'>
-                                            <div className="flex flex-row items-center relative">
-                                                <div
-                                                    className="flex items-center justify-center h-10 w-10 rounded-full  flex-shrink-0"
-                                                >
-                                                    <img className="h-8 w-8 object-cover  rounded-full" src={`${userMessagingProfile.profilePicture}`} />
-                                                </div>
-                                                <div
-                                                    className="relative ml-3 text-sm bg-white py-2 px-4 shadow rounded-xl"
-                                                >
-                                                    <div>
-                                                        {oneMap.message}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
+
+
                                 {
                                     messageArry && messageArry.sort((a, b) => new Date(a.date) - new Date(b.date)).map((oneMap, index) => (
                                         <div key={index} className={oneMap.senderId === context.user ? 'col-start-6 col-end-13 p-3 rounded-lg ' : 'col-start-1 col-end-8 p-3 rounded-lg'}>
