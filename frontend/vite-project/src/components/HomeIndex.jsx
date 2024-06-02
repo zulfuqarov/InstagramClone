@@ -1,6 +1,7 @@
 import React, { useEffect, useContext } from 'react'
 import UserProfile from './UserProfile'
 import { ContextInsta } from '../Context/Context'
+import { Link } from 'react-router-dom'
 const HomeIndex = () => {
 
     const context = useContext(ContextInsta)
@@ -17,18 +18,20 @@ const HomeIndex = () => {
                     context.followingPost.map((oneMap, index) => (
                         <div key={index} className="bg-white p-4">
                             <div className="bg-white border rounded-sm max-w-md">
-                                <div className="flex justify-between items-center">
-                                    <div className='flex items-center px-4 py-3'>
-                                        <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
-                                        <div className="ml-3 ">
-                                            <span className="text-sm font-semibold antialiased block leading-tight">{oneMap.fullName}</span>
-                                            <span className="text-gray-600 text-xs block">{oneMap.bio}</span>
+                                <Link to={`/${oneMap.fullName}`}>
+                                    <div className="flex justify-between items-center">
+                                        <div className='flex items-center px-4 py-3'>
+                                            <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
+                                            <div className="ml-3 ">
+                                                <span className="text-sm font-semibold antialiased block leading-tight">{oneMap.fullName}</span>
+                                                <span className="text-gray-600 text-xs block">{oneMap.bio}</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <i className="fa-solid fa-ellipsis text-[19px] pr-[10px] cursor-pointer"></i>
                                         </div>
                                     </div>
-                                    <div>
-                                        <i className="fa-solid fa-ellipsis text-[19px] pr-[10px] cursor-pointer"></i>
-                                    </div>
-                                </div>
+                                </Link>
                                 <img className='object-cover w-[446px] h-[446px]' src={`${oneMap.img}`} />
                                 <div className="flex items-center justify-between mx-4 mt-3 mb-2">
                                     <div className="flex gap-5">
@@ -43,8 +46,8 @@ const HomeIndex = () => {
                                     </div>
                                 </div>
                                 <div className="font-semibold text-sm mx-4 mt-2 mb-4">
-                                    {context.likeCount && 
-                                        context.likeCount._id === oneMap._id ? context.likeCount.likes.length : oneMap.likes.length 
+                                    {context.likeCount &&
+                                        context.likeCount._id === oneMap._id ? context.likeCount.likes.length : oneMap.likes.length
                                     }
                                 </div>
                                 <div className='border-[1px] border-gray-200 px-[10px] py-[10px] flex flex-col rounded-lg m-[10px]'>

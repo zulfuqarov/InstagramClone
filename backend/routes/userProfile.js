@@ -103,7 +103,7 @@ router.put("/unFollow/:id", async (req, res) => {
 router.get("/ProfileUser", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
-
+  
   try {
     let ProfileUser;
     if (userId) {
@@ -113,10 +113,12 @@ router.get("/ProfileUser", async (req, res) => {
       ProfileUser = await user.findById(userId).select("-email -password");
     } else if (username) {
       ProfileUser = await user
-        .findOne({ username: username })
+        .findOne({ fullName: username })
         .select("-email -password");
     } else {
-      return res.status(400).json({ message: "No user ID or username provided" });
+      return res
+        .status(400)
+        .json({ message: "No user ID or username provided" });
     }
 
     return res.status(200).json(ProfileUser);

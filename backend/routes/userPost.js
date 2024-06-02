@@ -72,7 +72,9 @@ router.put("/EditPost/:id", async (req, res) => {
 router.get("/GetPost/:id", async (req, res) => {
   const { id } = req.params;
   try {
-    const GetPost = await post.findById(id);
+    const GetPost = await post.find({
+      userId: id,
+    });
     res.status(200).json(GetPost);
   } catch (error) {
     console.log(error);
@@ -138,11 +140,9 @@ router.put("/postLike/:id", async (req, res) => {
       ? { $pull: { likes: decodedToken.sub } }
       : { $push: { likes: decodedToken.sub } };
 
-    const updatedPost = await post.findOneAndUpdate(
-      { _id: id },
-      update,
-      { new: true } 
-    );
+    const updatedPost = await post.findOneAndUpdate({ _id: id }, update, {
+      new: true,
+    });
 
     const message = postFind.likes.includes(decodedToken.sub)
       ? "You have unliked this post"

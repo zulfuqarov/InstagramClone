@@ -14,6 +14,7 @@ import Context from './Context/Context';
 import Message from './page/Message';
 import Search from './page/Search';
 import NotFoundPage from './page/NotFoundPage';
+import FollowingUserProfile from './page/FollowingUserProfile';
 
 
 
@@ -31,6 +32,7 @@ const App = () => {
             <Route path='Search' element={<Search />} />
             <Route path='Add-Post' element={<AddPost />} />
           </Route >
+          <Route path="/:userName" element={<FollowingUserProfile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFoundPage />} />
