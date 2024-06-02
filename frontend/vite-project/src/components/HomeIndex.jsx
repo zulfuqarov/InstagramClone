@@ -43,8 +43,9 @@ const HomeIndex = () => {
                                     </div>
                                 </div>
                                 <div className="font-semibold text-sm mx-4 mt-2 mb-4">
-
-                                    {oneMap.likes.length}
+                                    {context.likeCount && 
+                                        context.likeCount._id === oneMap._id ? context.likeCount.likes.length : oneMap.likes.length 
+                                    }
                                 </div>
                                 <div className='border-[1px] border-gray-200 px-[10px] py-[10px] flex flex-col rounded-lg m-[10px]'>
                                     <div className='flex  items-center'>

@@ -2,6 +2,7 @@ import user from "../model/user.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import express from "express";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -102,14 +103,22 @@ router.put("/unFollow/:id", async (req, res) => {
 router.get("/ProfileUser", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
+
   try {
-    const ProfileUser = userId
-      ? await user.findById(userId).select("-email -password")
-      : await user
-          .findOne({
-            username: username,
-          })
-          .select("-email -password");
+    let ProfileUser;
+    if (userId) {
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        return res.status(400).json({ message: "Invalid user ID" });
+      }
+      ProfileUser = await user.findById(userId).select("-email -password");
+    } else if (username) {
+      ProfileUser = await user
+        .findOne({ username: username })
+        .select("-email -password");
+    } else {
+      return res.status(400).json({ message: "No user ID or username provided" });
+    }
+
     return res.status(200).json(ProfileUser);
   } catch (error) {
     console.log(error);

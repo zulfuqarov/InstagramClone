@@ -159,10 +159,12 @@ const Context = ({ children }) => {
 
     // post likse start
     const [buttonIndex, setbuttonIndex] = useState(null)
+    const [likeCount, setlikeCount] = useState()
     const postlike = async (id, event, index) => {
         try {
             const res = await axios.put(`${REACT_APP_BACKEND_HOST}/post/postLike/${id}`)
             console.log(res.data)
+            setlikeCount(res.data.updatedPost)
             setbuttonIndex(index)
             const paragraph = event.target;
             if (paragraph) {
@@ -230,6 +232,7 @@ const Context = ({ children }) => {
             getFollowingPost,
             signOut,
             postlike,
+            likeCount,
             buttonIndex,
             profileSearch,
             searchProfile,

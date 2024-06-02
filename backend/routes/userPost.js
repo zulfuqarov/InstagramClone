@@ -131,16 +131,27 @@ router.put("/postLike/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
+
     const postFind = await post.findById(id);
-    if (postFind.likes.includes(decodedToken.sub)) {
-      await postFind.updateOne({ $pull: { likes: decodedToken.sub } });
-      res.status(200).json("you have unliked this post");
-    } else {
-      await postFind.updateOne({ $push: { likes: decodedToken.sub } });
-      res.status(200).json("you have liked this post");
-    }
+
+    const update = postFind.likes.includes(decodedToken.sub)
+      ? { $pull: { likes: decodedToken.sub } }
+      : { $push: { likes: decodedToken.sub } };
+
+    const updatedPost = await post.findOneAndUpdate(
+      { _id: id },
+      update,
+      { new: true } 
+    );
+
+    const message = postFind.likes.includes(decodedToken.sub)
+      ? "You have unliked this post"
+      : "You have liked this post";
+
+    res.status(200).json({ message, updatedPost });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
