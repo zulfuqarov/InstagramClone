@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { ContextInsta } from '../Context/Context'
 
-const ProfileHeader = () => {
+const ProfileHeader = ({editProfile}) => {
     const context = useContext(ContextInsta)
 
     useEffect(() => {
@@ -17,7 +17,7 @@ const ProfileHeader = () => {
             <div className='flex flex-col'>
                 <div className='flex justify-between w-[400px]'>
                     <p className='text-[19px] text-gray-700 '>{context.userProfile.fullName}</p>
-                    <button className='text-[19px] text-gray-700 bg-gray-200 px-[10px] py-[2px] rounded-lg hover:bg-slate-100 hover:text-black transition-all'>Edit profile</button>
+                    <button onClick={editProfile} className='text-[19px] text-gray-700 bg-gray-200 px-[10px] py-[2px] rounded-lg hover:bg-slate-100 hover:text-black transition-all'>Edit profile</button>
                     <button className='text-[19px] text-gray-700  hover:text-black transition-all'><i class="fa-solid fa-gear"></i></button>
                 </div>
                 <div className='flex justify-between w-[400px] pt-[30px]'>

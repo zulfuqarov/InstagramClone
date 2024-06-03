@@ -3,12 +3,28 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
-
+import cloudinary from "cloudinary";
 dotenv.config();
 
 const router = express.Router();
 
 router.put("/EditProfile", async (req, res) => {
+  const defaultImg =
+    "https://assets.bananastreet.ru/unsafe/2498x2498/https://bananastreet.ru/system/user/avatar/38/382/382231/7e7ab91539.png";
+  let profilePicture =
+    req.files && req.files.profilePicture
+      ? req.files.profilePicture.tempFilePath
+      : defaultImg;
+
+  if (profilePicture !== defaultImg) {
+    profilePicture = await cloudinary.uploader.upload(profilePicture, {
+      use_filename: true,
+      folder: "Home",
+    });
+  }
+
+  const { username, bio, fullName } = req.body;
+
   const token = req.cookies.jwtToken;
   if (token) {
     try {
@@ -16,7 +32,15 @@ router.put("/EditProfile", async (req, res) => {
       const EditUser = await user.findByIdAndUpdate(
         decodedToken.sub,
         {
-          $set: req.body,
+          $set: {
+            username,
+            bio,
+            fullName,
+            profilePicture:
+              profilePicture !== defaultImg
+                ? profilePicture.url
+                : profilePicture,
+          },
         },
         { new: true }
       );
@@ -103,7 +127,7 @@ router.put("/unFollow/:id", async (req, res) => {
 router.get("/ProfileUser", async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
-  
+
   try {
     let ProfileUser;
     if (userId) {
