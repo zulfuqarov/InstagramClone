@@ -106,10 +106,15 @@ router.get("/FollowingPost", async (req, res) => {
       const followingUser = await post.find({
         userId: followingId,
       });
+      if (!followingUser) {
+        continue;
+      }
       const followingProfile = await user
         .findById(followingId)
         .select({ fullName: 1, bio: 1, profilePicture: 1, _id: 0 });
-
+      if (!followingProfile) {
+        continue;
+      }
       const followingUserMap = followingUser.map((onemap) => {
         const followingUserAddDetails = {
           ...onemap._doc,

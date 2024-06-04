@@ -157,4 +157,34 @@ router.get("/Profile", async (req, res) => {
   }
 });
 
+router.post("/Check", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const token = req.cookies.jwtToken;
+    if (token) {
+      const decodedToke = jwt.verify(token, process.env.TOKEN_SECRET_CODE);
+      if(email === '' || password === ''){
+        return res.status(400)
+         .json({ message: "Email or password is not entered" });
+      }
+      const response = await user.findById(decodedToke._id);
+      if (response.password === password && response.email === email) {
+        return res
+          .status(200)
+          .json({ message: "you can change password and email" });
+      } else {
+        return res
+          .status(400)
+          .json({ message: "Enter the correct email and password" });
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Authentication failed... Try again" });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default router;

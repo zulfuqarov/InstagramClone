@@ -2,7 +2,7 @@ import { useContext } from "react"
 import React from 'react'
 import { ContextInsta } from "../Context/Context"
 import { Link } from "react-router-dom"
-
+import { ToastContainer } from "react-toastify"
 
 const Login = () => {
   const context = useContext(ContextInsta)
@@ -42,6 +42,7 @@ const Login = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </section>
     )
   }

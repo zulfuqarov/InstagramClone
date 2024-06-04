@@ -1,6 +1,8 @@
 import React, { createContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { toast } from 'react-toastify';
+
 // env start
 const env = import.meta.env
 const { REACT_APP_BACKEND_HOST } = env
@@ -32,12 +34,31 @@ const Context = ({ children }) => {
         setloading(true)
         try {
             const result = await axios.post(`${REACT_APP_BACKEND_HOST}/auth/Sign/`, inputs)
-            console.log(result.data)
+            console.log(result.data.message)
+            toast.success('Sign with successful', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             navigate('/')
             setloading(false)
         } catch (error) {
             console.log(error)
-            alert(`${error.response.data.message}`)
+            toast.error(`${error.response.data.message}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             setloading(false)
         }
     }
@@ -55,9 +76,18 @@ const Context = ({ children }) => {
             }
         } catch (error) {
             console.log(error)
-            alert(`${error.response.data.message}`)
+            toast.error(`${error.response.data.message}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             setloadingHome(false)
-            navigate("/Login")
+            navigate("/login")
         }
     }
     // Check Token end
@@ -68,7 +98,7 @@ const Context = ({ children }) => {
         try {
             const res = await axios.post(`${REACT_APP_BACKEND_HOST}/auth/Logout`)
             console.log(res)
-            navigate("/Login")
+            navigate("/login")
         } catch (error) {
             console.log(error)
         }
@@ -123,9 +153,29 @@ const Context = ({ children }) => {
     const getFollow = async (id) => {
         try {
             const res = await axios.put(`${REACT_APP_BACKEND_HOST}/user/Follow/${id}`)
+            toast.success(`${res.data}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
             console.log(res.data)
         } catch (error) {
             console.log(error)
+            toast.info(`${error.response.data}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
     // get follow end
@@ -135,9 +185,28 @@ const Context = ({ children }) => {
     const getUnfollow = async (id) => {
         try {
             const res = await axios.put(`${REACT_APP_BACKEND_HOST}/user/unFollow/${id}`)
-            console.log(res.data)
+            toast.info(`${res.data}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         } catch (error) {
             console.log(error)
+            toast.info(`${error.response.data}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
     // get follow end

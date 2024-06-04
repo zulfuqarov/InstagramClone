@@ -2,6 +2,8 @@ import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios"
 import { ContextInsta } from '../Context/Context'
+import { toast, ToastContainer } from 'react-toastify'
+
 const Register = () => {
   const navigate = useNavigate()
   const context = useContext(ContextInsta)
@@ -29,7 +31,7 @@ const Register = () => {
   const handleChangeFile = (e) => {
     if (!e.target.files[0]) {
       return;
-  }
+    }
     setinputFile(e.target.files[0])
     setselectedImage(URL.createObjectURL(e.target.files[0]))
   }
@@ -49,13 +51,32 @@ const Register = () => {
 
       const result = await axios.post(`${context.env.REACT_APP_BACKEND_HOST}/auth/Register/`, fileUpload)
       console.log(result.data)
+      toast.success(`${result.data.message}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       if (result.status === 200) {
         navigate('/Login')
       }
     } catch (error) {
       console.log(error)
       setloading(false)
-      alert(`${error.response.data.message}`)
+      toast.error(`${error.response.data.message}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 
@@ -133,6 +154,7 @@ const Register = () => {
             </div>
           </div>
         </div>
+        <ToastContainer />
       </section>
     )
   }

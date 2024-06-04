@@ -1,7 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TECollapse } from "tw-elements-react";
+import { ContextInsta } from '../Context/Context'
+import { toast } from "react-toastify";
+import axios from "axios";
+import 'react-toastify/dist/ReactToastify.css';
 
 const Settings = () => {
+    const context = useContext(ContextInsta)
+
     const [activeElement, setActiveElement] = useState("");
 
     const handleClick = (value) => {
@@ -11,6 +17,67 @@ const Settings = () => {
             setActiveElement(value);
         }
     };
+
+    // Delete Profile
+    const DeleteProfile = async () => {
+        try {
+            const res = await axios.delete(`${context.REACT_APP_BACKEND_HOST}/user/DeleteProfile`)
+            toast.info(`${res.data.message}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            window.location.reload();
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // Change Password and Email
+    const [oldInput, setoldInput] = useState({
+        email: '',
+        password: ''
+    })
+    const handleChangeEmailAndPass = (e) => {
+        setoldInput({
+            ...oldInput,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const ChangeEmailAndPassword = async () => {
+        try {
+            const res = await axios.post(`${context.REACT_APP_BACKEND_HOST}/auth/Check`, oldInput)
+            toast.info(`${res.data.message}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        } catch (error) {
+            console.log(error)
+            toast.error(`${error.response.data.message}`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    }
+
     return (
         <section className="w-full h-[100vh] flex flex-col justify-center">
             <div id="accordionExample">
@@ -55,6 +122,7 @@ const Settings = () => {
                     >
                         <div className="px-5 py-4">
                             <button
+                                onClick={DeleteProfile}
                                 type="button"
                                 className="inline-block rounded bg-danger px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#dc4c64] transition duration-150 ease-in-out hover:bg-danger-600 hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:bg-danger-600 focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] focus:outline-none focus:ring-0 active:bg-danger-700 active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.3),0_4px_18px_0_rgba(220,76,100,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(220,76,100,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(220,76,100,0.2),0_4px_18px_0_rgba(220,76,100,0.1)] "
                             >
@@ -103,16 +171,30 @@ const Settings = () => {
                 <TECollapse
                     show={activeElement === "element2"}
                     className="!mt-0 !rounded-b-none !shadow-none"
-                >
+                >   <div className="px-5 py-4">
+                        <p className="text-red-600 text-[14px]">To change email and password Please enter your old email and password</p>
+                    </div>
                     <div className="px-5 py-4">
                         <div className="mt-[5px]">
                             <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                            <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
+                            <input onChange={handleChangeEmailAndPass} type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
                         </div>
                         <div className="mt-[5px]">
                             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                            <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
+                            <input onChange={handleChangeEmailAndPass} type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" />
                         </div>
+
+                        <div className="mt-[10px]">
+                            <button
+                                onClick={ChangeEmailAndPassword}
+                                type="button"
+                                className="inline-block rounded bg-blue-500 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white  transition duration-150 ease-in-out hover:bg-blue-500-600  focus:bg-blue-500  active:bg-blue-500 "
+                            >
+                                Submit
+                            </button>
+                        </div>
+
+
                     </div>
                 </TECollapse>
             </div>

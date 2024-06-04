@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { Outlet } from "react-router-dom"
 import Category from '../components/Category'
 import { ContextInsta } from '../Context/Context'
+import { ToastContainer } from 'react-toastify';
 
 
 const Home = () => {
@@ -33,6 +34,7 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
+                <ToastContainer />
             </section>
         )
     }
