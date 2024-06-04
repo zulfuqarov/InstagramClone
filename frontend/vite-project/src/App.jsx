@@ -15,6 +15,7 @@ import Message from './page/Message';
 import Search from './page/Search';
 import NotFoundPage from './page/NotFoundPage';
 import FollowingUserProfile from './page/FollowingUserProfile';
+import Settings from './page/Settings';
 
 
 
@@ -28,9 +29,10 @@ const App = () => {
           <Route path="/" element={<Home />} >
             <Route index={true} element={<HomeIndex />} />
             <Route path="profile" element={<Profile />} />
-            <Route path="/Message" element={<Message />} />
+            <Route path="Message" element={<Message />} />
             <Route path='Search' element={<Search />} />
             <Route path='Add-Post' element={<AddPost />} />
+            <Route path="Settings" element={<Settings />} />
           </Route >
           <Route path="/:userName" element={<FollowingUserProfile />} />
           <Route path="/login" element={<Login />} />

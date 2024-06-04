@@ -1,12 +1,21 @@
 import React, { useContext, useEffect } from 'react'
 import { ContextInsta } from '../Context/Context'
-
+import axios from 'axios'
 const Post = () => {
   const context = useContext(ContextInsta)
 
   useEffect(() => {
     context.getUserPost()
   }, [])
+
+  const DeletePost = async (id) => {
+    try {
+      const res = await axios.delete(`${context.REACT_APP_BACKEND_HOST}/post/DeletePost/${id}`)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   if (context.userPost.length > 0) {
     return (
@@ -27,6 +36,7 @@ const Post = () => {
                   <i className="fa-solid fa-heart "><span className='text-[14px] pl-[7px] inline-block'>{oneMap.likes.length}</span></i>
                   <i className="fa-solid fa-comment pl-[20px]"><span className='text-[14px] pl-[7px] inline-block'>{oneMap.comments.length}</span></i>
                 </div>
+                <button onClick={() => DeletePost(oneMap._id)} className='text-red-600 group-hover:scale-100 transition-all text-[15px] z-30 scale-0 absolute bottom-0 font-semibold right-[15px] hover:text-white'>Delete Post</button>
               </div>
             ))
           }

@@ -155,4 +155,14 @@ router.put("/postLike/:id", async (req, res) => {
   }
 });
 
+router.delete("/DeletePost/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const DeletePost = await post.findByIdAndDelete(id);
+    res.status(200).json({ message: "Post has been deleted!" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default router;

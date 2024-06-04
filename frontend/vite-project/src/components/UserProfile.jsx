@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { ContextInsta } from '../Context/Context'
+import { Link } from 'react-router-dom'
 
 const UserProfile = () => {
 
@@ -44,15 +45,17 @@ const UserProfile = () => {
                         context.allUserProfile.filter(oneFilter => oneFilter._id !== context.user).reverse().map((oneMap, index) => (
                             <div key={index} className='pt-[10px] '>
                                 <div className='flex items-center justify-between'>
-                                    <div className='flex items-center'>
-                                        <div >
-                                            <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
+                                    <Link to={`/${oneMap.fullName}`}>
+                                        <div className='flex items-center'>
+                                            <div >
+                                                <img className="h-8 w-8 object-cover rounded-full" src={`${oneMap.profilePicture}`} />
+                                            </div>
+                                            <div className='pl-[20px] text-gray-600 text-[15px]'>
+                                                <p>{oneMap.fullName}</p>
+                                                <small>{oneMap.bio}</small>
+                                            </div>
                                         </div>
-                                        <div className='pl-[20px] text-gray-600 text-[15px]'>
-                                            <p>{oneMap.fullName}</p>
-                                            <small>{oneMap.bio}</small>
-                                        </div>
-                                    </div>
+                                    </Link>
                                     <div>
                                         {
                                             context.userProfile.followings.includes(oneMap._id) ?
