@@ -163,6 +163,7 @@ const Context = ({ children }) => {
                 progress: undefined,
                 theme: "light",
             });
+            getUserProfile()
             console.log(res.data)
         } catch (error) {
             console.log(error)
@@ -181,7 +182,7 @@ const Context = ({ children }) => {
     // get follow end
 
 
-    // get follow start
+    // get Unfollow start
     const getUnfollow = async (id) => {
         try {
             const res = await axios.put(`${REACT_APP_BACKEND_HOST}/user/unFollow/${id}`)
@@ -195,6 +196,7 @@ const Context = ({ children }) => {
                 progress: undefined,
                 theme: "light",
             });
+            getUserProfile()
         } catch (error) {
             console.log(error)
             toast.info(`${error.response.data}`, {
@@ -209,7 +211,7 @@ const Context = ({ children }) => {
             });
         }
     }
-    // get follow end
+    // get Unfollow end
 
 
     // get followinf post start

@@ -164,8 +164,11 @@ router.get("/FollowingUser", async (req, res) => {
       const FollowUser = await user
         .findById(followingUser)
         .select("-email -password");
-      followingProfile.push(FollowUser);
+      if (FollowUser) {
+        followingProfile.push(FollowUser);
+      }
     }
+    console.log(followingProfile);
     res.status(200).json(followingProfile);
   } catch (error) {
     console.log(error);

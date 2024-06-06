@@ -86,7 +86,7 @@ const Profile = () => {
                 <ProfileHeader editProfile={editProfile} />
                 <Post />
 
-                <section className={`bg-slate-950 transition-all bg-opacity-90 overflow-hidden  absolute z-50 w-full dark:bg-gray-900 py-[60px] h-full top-0 left-0
+                <section className={`bg-slate-950 h-[100vh] transition-all bg-opacity-90 overflow-hidden  absolute z-50 w-full dark:bg-gray-900 py-[60px]  top-0 left-0
                 ${showEditProfile ? 'scale-100' : 'scale-0'}
             `}>
 

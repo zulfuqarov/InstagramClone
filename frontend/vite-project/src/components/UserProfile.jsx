@@ -57,7 +57,7 @@ const UserProfile = () => {
                                         </div>
                                     </Link>
                                     <div>
-                                        {
+                                        { 
                                             context.userProfile.followings.includes(oneMap._id) ?
                                                 <button onClick={() => context.getUnfollow(oneMap._id)} className='text-[13px] text-blue-500'>Unfollow</button>
                                                 :
