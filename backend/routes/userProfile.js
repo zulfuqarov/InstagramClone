@@ -168,7 +168,6 @@ router.get("/FollowingUser", async (req, res) => {
         followingProfile.push(FollowUser);
       }
     }
-    console.log(followingProfile);
     res.status(200).json(followingProfile);
   } catch (error) {
     console.log(error);

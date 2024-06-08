@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { ContextInsta } from '../Context/Context'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 const Post = () => {
   const context = useContext(ContextInsta)
 
@@ -12,8 +13,28 @@ const Post = () => {
     try {
       const res = await axios.delete(`${context.REACT_APP_BACKEND_HOST}/post/DeletePost/${id}`)
       console.log(res.data)
+      toast.success(`${res.data.message}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } catch (error) {
       console.log(error)
+      toast.error(`${error.response.data.message}`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   }
 

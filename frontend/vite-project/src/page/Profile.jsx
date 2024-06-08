@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import ProfileHeader from '../components/ProfileHeader'
 import Post from '../components/Post'
 import { ContextInsta } from '../Context/Context'
+import { toast } from 'react-toastify'
 import axios from "axios"
 
 
@@ -45,7 +46,7 @@ const Profile = () => {
 
     const [loading, setloading] = useState(false)
     const handleSubmit = async () => {
-        if (inputs.username && inputs.bio && inputs.fullName && inputFile) {
+        if (inputs.username && inputs.bio && inputs.fullName ) {
             setloading(true)
             try {
                 const fileUpload = new FormData()
@@ -59,14 +60,42 @@ const Profile = () => {
                     context.getUserProfile()
                     setloading(false)
                     setshowEditProfile(false)
+                    toast.success(`${result.data.message}`, {
+                        position: "top-right",
+                        autoClose: 2000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    });
                 }
             } catch (error) {
                 setloading(false)
                 console.log(error)
-                alert(`${error.response.data.message}`)
+                toast.error(`${error.response.data.message}`, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
         } else {
-            alert('Please fill all the fields')
+            toast.error('Please fill all the fields', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
         }
     }
 
