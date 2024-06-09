@@ -1,7 +1,15 @@
 import mongoose from "mongoose";
 
 const commentSchema = new mongoose.Schema({
-    senderId: {
+  fullName: {
+    type: String,
+    required: true,
+  },
+  profilePicture: {
+    type: String,
+    required: true,
+  },
+  senderId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
