@@ -70,7 +70,7 @@ const Context = ({ children }) => {
         try {
             const result = await axios.get(`${REACT_APP_BACKEND_HOST}/auth/Profile/`)
             if (result.status === 200) {
-                setloadingHome(false)
+                // setloadingHome(false)
                 setuser(result.data.user)
                 console.log(result.data)
             }
@@ -86,7 +86,7 @@ const Context = ({ children }) => {
                 progress: undefined,
                 theme: "light",
             });
-            setloadingHome(false)
+            // setloadingHome(false)
             navigate("/login")
         }
     }
@@ -128,8 +128,10 @@ const Context = ({ children }) => {
             const res = await axios.get(`${REACT_APP_BACKEND_HOST}/user/ProfileUser?userId=${user}`)
             console.log(res.data)
             setuserProfile(res.data)
+            setloadingHome(false)
         } catch (error) {
             console.log(error)
+            setloadingHome(false)
         }
     }
     // get userProfile end

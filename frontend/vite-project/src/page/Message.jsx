@@ -108,7 +108,7 @@ const Message = () => {
     }, [userMessagingProfile])
 
     return (
-        <div class="flex flex-row h-screen antialiased text-gray-800">
+        <div class="flex flex-row h-screen w-full justify-between antialiased text-gray-800">
             <LeftMessage userActive={userActive} getUseReceiverId={getUseReceiverId} />
             {
                 userMessagingProfile === null ? <p className='flex flex-col w-full h-full justify-center items-center text-red-500 text-[15px]'>Could you please select the person you'd like to message?</p> :

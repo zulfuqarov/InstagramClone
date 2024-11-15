@@ -6,10 +6,7 @@ const UserProfile = () => {
 
     const context = useContext(ContextInsta)
 
-    useEffect(() => {
-        context.getUserProfile()
-        context.getAllUserProfile()
-    }, [context.user])
+
 
 
     if (context.userProfile) {
@@ -57,7 +54,7 @@ const UserProfile = () => {
                                         </div>
                                     </Link>
                                     <div>
-                                        { 
+                                        {
                                             context.userProfile.followings.includes(oneMap._id) ?
                                                 <button onClick={() => context.getUnfollow(oneMap._id)} className='text-[13px] text-blue-500'>Unfollow</button>
                                                 :
