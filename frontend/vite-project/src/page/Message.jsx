@@ -4,6 +4,7 @@ import RightMessage from '../components/RightMessage'
 import { io } from 'socket.io-client';
 import { ContextInsta } from '../Context/Context';
 import axios from "axios"
+import { toast } from 'react-toastify';
 
 
 const Message = () => {
@@ -70,6 +71,11 @@ const Message = () => {
 
     const [senderUserMessage, setsenderUserMessage] = useState([])
     const SendMessage = async () => {
+
+        if (MessageInput.Message.trim() === '') {
+            toast.error('Message is empty!')
+            return
+        }
         try {
             await postMessageDb()
             setsenderUserMessage((prev) => [...prev, { message: MessageInput.Message, date: new Date(), senderId: context.user }])
