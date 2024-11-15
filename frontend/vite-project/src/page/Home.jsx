@@ -15,7 +15,9 @@ const Home = () => {
     useEffect(() => {
         context.getUserProfile()
         context.getAllUserProfile()
+
     }, [context.user])
+
 
 
     if (context.userProfile) {

@@ -283,6 +283,8 @@ const Context = ({ children }) => {
     }
     // get follwong profile end
 
+    
+
     return (
         <ContextInsta.Provider value={{
             env,
@@ -310,8 +312,7 @@ const Context = ({ children }) => {
             profileSearch,
             searchProfile,
             getFollowingProfile,
-            followingProfile
-
+            followingProfile,
         }}>
             {children}
         </ContextInsta.Provider>
